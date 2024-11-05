@@ -1,7 +1,7 @@
 // src/routes/index.tsx
 import { lazy, Suspense, FC } from "react";
 import { useRoutes, Navigate } from "react-router-dom";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined ,ShopOutlined} from "@ant-design/icons";
 import type { XRoutes } from "./types";
 
 // import { Translation } from "react-i18next";
@@ -13,11 +13,12 @@ import {
 } from "../layouts";
 import Loading from "@comps/Loading";
 
+
 const Login = lazy(() => import("@pages/login"));
 const Dashboard = lazy(() => import("@pages/dashboard"));
 const NotFound = lazy(() => import("@pages/404"));
-
-
+const HospitalSet = lazy(() => import("@pages/hospital/hospitalSet/HospitalSet"))
+const AddOrEdit = lazy(() => import("@pages/hospital/hospitalSet/components/AddOrEdit"))
 
 const load = (Comp: FC) => {
     return (
@@ -55,6 +56,31 @@ const routes: XRoutes = [
                     title: '首页'
                 },
                 element: load(Dashboard),
+            },
+            {
+                path:"/syt/hospital",
+                meta: {
+                    icon:<ShopOutlined />,
+                    title:'医院管理'
+                },
+                children:[
+                    {
+                        path:"/syt/hospital/hospitalSet",
+                        meta:{
+                            title:'医院设置'
+                        },
+                        element: load(HospitalSet)
+                    },
+                    {
+                        path:"/syt/hospital/hospitalSet/add",
+                        meta:{
+                            title:'添加医院'
+                        },
+                        hidden:true,
+                        element: load(AddOrEdit)
+                    }
+                ]
+
             }
         ],
     },
