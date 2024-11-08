@@ -1,5 +1,5 @@
 import { deleteHospitalSetById, getHospitalSetList, removeBatch } from '@/api/hospital/hospitalSet'
-import { IHospitalSetList } from '@/api/hospital/model/hospitalSetTypes'
+import { IHospitalSetItem, IHospitalSetList } from '@/api/hospital/model/hospitalSetTypes'
 import{EditOutlined,DeleteOutlined,SearchOutlined,ExclamationCircleFilled} from '@ant-design/icons'
 import { Button, Card, Form, Input, Space, Table, Modal, message } from 'antd'
 
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function HospitalSet() {
   const navigate = useNavigate()
-  const columns:ColumnsType<any> = [
+  const columns:ColumnsType<IHospitalSetItem> = [
     {
       title:'序号',
       align:'center',
@@ -51,7 +51,7 @@ export default function HospitalSet() {
       render(row:any){
         return (
           <Space>
-            <Button type='primary' icon={<EditOutlined />}></Button>
+            <Button type='primary' icon={<EditOutlined />} onClick={() => navigate('/syt/hospital/hospitalSet/edit/' + row.id)}></Button>
             <Button type='primary' danger icon={<DeleteOutlined />} onClick={() => deleteById(row.id) }></Button>
           </Space>
         )

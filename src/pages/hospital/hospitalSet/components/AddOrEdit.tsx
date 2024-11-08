@@ -1,23 +1,39 @@
-import { addHospitalSet } from '@/api/hospital/hospitalSet'
+import { addHospitalSet, getHospitalSetById, updateHospitalSet } from '@/api/hospital/hospitalSet'
 import { Button, Card, Form, Input, message, Space } from 'antd'
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function AddOrUpdate() {
+  let {id} = useParams()  
   const [form] =Form.useForm()
   const navigate = useNavigate()
   const onFinish = async() => {
     let data = form.getFieldsValue()
     try{
-      await addHospitalSet(data)
-      message.success('添加成功')
+        if(id){
+            data.id = id
+            await updateHospitalSet(data)
+            message.success('编辑成功')
+
+        }else{
+            await addHospitalSet(data)
+            message.success('添加成功')
+        }
+      
       navigate('/syt/hospital/hospitalSet')
     }catch(e){
-      message.error('添加失败')
+      message.error('操作失败')
     }
     
 
   }
+  async function _getHospitalSetById() {
+    let data = await getHospitalSetById(id as string)
+    form.setFieldsValue(data)
+  }
+  useEffect(()=>{
+    id && _getHospitalSetById()
+  },[])
   return (
       <Card>
           <Form

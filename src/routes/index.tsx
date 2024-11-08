@@ -19,7 +19,9 @@ const Dashboard = lazy(() => import("@pages/dashboard"));
 const NotFound = lazy(() => import("@pages/404"));
 const HospitalSet = lazy(() => import("@pages/hospital/hospitalSet/HospitalSet"))
 const AddOrEdit = lazy(() => import("@pages/hospital/hospitalSet/components/AddOrEdit"))
-
+const HospitalList = lazy(() => import("@pages/hospital/hospitalList/HospitalList"))
+const HospitalDetail = lazy(() => import("@pages/hospital/hospitalList/components/HospitalDetail"))
+const HospitalSchedule = lazy(() => import("@pages/hospital/hospitalList/components/HospitalSchedule"))
 const load = (Comp: FC) => {
     return (
         // 因为路由懒加载，组件需要一段网络请求时间才能加载并渲染
@@ -78,7 +80,38 @@ const routes: XRoutes = [
                         },
                         hidden:true,
                         element: load(AddOrEdit)
-                    }
+                    },
+                    {
+                        path:"/syt/hospital/hospitalSet/edit/:id",
+                        meta:{
+                            title:'编辑医院'
+                        },
+                        hidden:true,
+                        element: load(AddOrEdit)
+                    },
+                    {
+                        path:"/syt/hospital/hospitalList",
+                        meta:{
+                            title:'医院列表'
+                        },
+                        element: load(HospitalList)
+                    },
+                    {
+                        path:"/syt/hospital/hospitalList/show/:id",
+                        meta:{
+                            title:'医院详情'
+                        },
+                        hidden:true,
+                        element: load(HospitalDetail)
+                    },
+                    {
+                        path:"/syt/hospital/hospitalList/schedule/:hoscode",
+                        meta:{
+                            title:'医院排班'
+                        },
+                        hidden:true,
+                        element: load(HospitalSchedule)
+                    },
                 ]
 
             }

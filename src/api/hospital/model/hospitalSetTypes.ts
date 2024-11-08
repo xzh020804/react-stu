@@ -16,10 +16,14 @@ export interface IHospitalSetListResponse {
   total:number
 }
 
-export interface IHospitalSetDate {
+export interface IHospitalSetData {
   apiUrl: string,
   contactsName: string,
   contactsPhone: string,
   hoscode: string,
   hosname: string 
+}
+
+export interface IHospitalUpdateData extends IHospitalSetData {
+  id: string
 }
