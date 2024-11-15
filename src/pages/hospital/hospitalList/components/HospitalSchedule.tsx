@@ -2,35 +2,47 @@ import { Button, Card, Col, Pagination, Row, Table, Tag, Tree } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getDepartmentList, getScheduleList } from '@/api/hospital/hospitalList';
-import { IBookingScheduleList, IDepartmentList } from '@/api/hospital/model/hospitalListTypes';
+import { getDepartmentList, getDoctorList, getScheduleList } from '@/api/hospital/hospitalList';
+import { IBookingScheduleList, IDepartmentList, IDoctorItem, IDoctorList } from '@/api/hospital/model/hospitalListTypes';
 
 
 let height = document.documentElement.clientHeight - 180
 export default function HospitalSchedule() {
   let {hoscode} = useParams()
   const navigate = useNavigate()
-  const columns:ColumnsType<any>=[
+  const columns:ColumnsType<IDoctorItem>=[
     {
-      title:'序号'
+      align:'center',
+      width:100,
+      title:'序号',
+      render(value:any,row:any,index:number) {
+        return index + 1
+      }
     },
     {
-      title:'职称'
+      title:'职称',
+      dataIndex:'title'
     },
     {
-      title:'号源时间'
+      width:120,
+      title:'号源时间',
+      dataIndex:'workDate'
     },
     {
-      title:'总预约数	'
+      title:'总预约数	',
+      dataIndex:'reservedNumber'
     },
     {
-      title:'剩余预约数	'
+      title:'剩余预约数	',
+      dataIndex:'availableNumber'
     },
     {
-      title:'挂号费(元)	'
+      title:'挂号费(元)	',
+      dataIndex:'amount'
     },
     {
-      title:'擅长技能'
+      title:'擅长技能',
+      dataIndex:'skill'
     }
   ]
  
@@ -44,6 +56,7 @@ export default function HospitalSchedule() {
   let [total,setTotal] = useState<number>()
   let [workDate,setWorkDate] = useState<string>()
   let [bookingScheduleList,setBookingScheduleList] = useState<IBookingScheduleList>([])
+  let [doctorList,setDoctorList] = useState<IDoctorList>([])
   const _getDepartmentList = async() =>{
     let departmentList = await getDepartmentList(hoscode as string)
     departmentList = departmentList.map(item => {
@@ -67,12 +80,20 @@ export default function HospitalSchedule() {
     setWorkDate(workDate)
     
   }
+  const _getDoctorList = async() => {
+    let res = await getDoctorList(hoscode as string,depcode as string,workDate as string)
+    setDoctorList(res)
+    
+  }
   useEffect(()=>{
     hoscode && _getDepartmentList()
   },[])
   useEffect(()=>{
     depcode && _getScheduleList()
   },[depcode,current,pageSize])
+  useEffect(() => {
+    workDate && _getDoctorList()
+  },[workDate])
   return (
     <Card>
       <div>选择：{hosname} / {depname} / {workDate}</div>
@@ -115,8 +136,10 @@ export default function HospitalSchedule() {
           className='mt'
           pagination={false}
           columns={columns}
+          dataSource={doctorList}
+          rowKey={'id'}
           ></Table>
-          <Button className='mt'>返回</Button>
+          <Button className='mt' onClick={() => navigate(-1)}>返回</Button>
         </Col>
       </Row>
 

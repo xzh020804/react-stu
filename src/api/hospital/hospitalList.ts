@@ -1,5 +1,5 @@
 import { request } from "@utils/http"
-import { IDepartmentList, IDistrictList, IHospitalDetail, IHospitalListParams, IHospitalListResponse, IScheduleList } from "./model/hospitalListTypes"
+import { IDepartmentList, IDistrictList, IDoctorList, IHospitalDetail, IHospitalListParams, IHospitalListResponse, IScheduleList } from "./model/hospitalListTypes"
 /**
  * 根据id 获取省市区列表
  * @param id  86 省  
@@ -57,4 +57,8 @@ export const getDepartmentList = (hoscode:string)=>{
 
 export const getScheduleList = (page:number,limit:number,hoscode:string,depcode:string)=>{
     return request.get<any,IScheduleList>(`/admin/hosp/schedule/getScheduleRule/${page}/${limit}/${hoscode}/${depcode}`)
+}
+
+export const getDoctorList = (hoscode:string,depcode:string,workDate:string)=>{
+    return request.get<any,IDoctorList>(`/admin/hosp/schedule/findScheduleList/${hoscode}/${depcode}/${workDate}`)
 }

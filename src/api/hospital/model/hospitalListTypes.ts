@@ -112,3 +112,24 @@ export interface IScheduleList {
         hosname:string
     }
 }
+
+//医生排班
+export interface IDoctorItem {
+    "id": string,
+    "createTime": string,
+    "param": {
+        "dayOfWeek": string,
+        "depname": string,
+        "hosname": string
+    },
+    "hoscode": string,
+    "depcode": string,
+    "title": string,
+    "skill": string,
+    "workDate": string,
+    "reservedNumber": number,
+    "availableNumber": number,
+    "amount": number,
+    "status": number,
+}
+export type IDoctorList = IDoctorItem[]
